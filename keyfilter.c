@@ -96,6 +96,8 @@ int main(int argc, char *argv[]) {
                 sorterResult[resultIndex++] = (char) i;
             }
         }
+        sorterResult[resultIndex]='\0'
+
         printf("Enable: %s", sorterResult);
     }
 
