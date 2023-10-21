@@ -29,12 +29,10 @@ void loadAddress(char address[42][101], int *index) {
     }
 }
 
-void addUniqueAddress(char letterOfAddress, int *foundedInAscii, char *result, int *lengthOfResult, int *lengthOfValidAddresses,
+void addUniqueAddress(char letterOfAddress, int *foundedInAscii, int *lengthOfValidAddresses,
                       int *lastIndexOfValidAdress, int i) {
     if (foundedInAscii[(int) letterOfAddress] != 1) {
         foundedInAscii[(int) letterOfAddress] = 1;
-        result[(*lengthOfResult)] = letterOfAddress;
-        (*lengthOfResult)++;
         (*lastIndexOfValidAdress) = i;
     }
     (*lengthOfValidAddresses)++;
@@ -52,12 +50,11 @@ int main(int argc, char *argv[]) {
     loadAddress(address, &index);
 
 
-    char result[42];
+
     //length of ascii table
     int foundedInAscii[128] = {0};
     int lengthOfValidAddresses = 0;
     int lastIndexOfValidAdderss = -1;
-    int lengthOfResult = 0;
 
     if (argc == 2) {
         if (argv[1]) {
@@ -75,7 +72,7 @@ int main(int argc, char *argv[]) {
                         printf("Found: %s\n", address[i]);
                         return 0;
                     }
-                    addUniqueAddress(letterOfAddress, foundedInAscii, result, &lengthOfResult, &lengthOfValidAddresses, &lastIndexOfValidAdderss, i);
+                    addUniqueAddress(letterOfAddress, foundedInAscii, &lengthOfValidAddresses, &lastIndexOfValidAdderss, i);
                 }
 
             }
@@ -83,7 +80,7 @@ int main(int argc, char *argv[]) {
     } else {
         for (int i = 0; i < index; ++i) {
             char firstLetterOfAddress = address[i][0];
-            addUniqueAddress(firstLetterOfAddress, foundedInAscii, result, &lengthOfResult, &lengthOfValidAddresses, &lastIndexOfValidAdderss, i);
+            addUniqueAddress(firstLetterOfAddress, foundedInAscii, &lengthOfValidAddresses, &lastIndexOfValidAdderss, i);
         }
     }
 
@@ -92,7 +89,14 @@ int main(int argc, char *argv[]) {
     } else if (lengthOfValidAddresses == 1) {
         printf("Found: %s", address[lastIndexOfValidAdderss]);
     } else {
-        printf("Enable: %s", result);
+        int resultIndex=0;
+        char sorterResult[42];
+        for (int i = 0; i < 128; i++) {
+            if (foundedInAscii[i] == 1) {
+                sorterResult[resultIndex++] = (char) i;
+            }
+        }
+        printf("Enable: %s", sorterResult);
     }
 
     return 0;
